@@ -84,4 +84,20 @@ public class StudentService
 		structure.setData(list);
 		return new ResponseEntity<ResponseStructure<List<Student>>>(structure, HttpStatus.FOUND) ;
 	}
+	
+	public ResponseEntity<ResponseStructure<Student>> deleteStudent(long id) 
+	{
+		Student student = dao.getStudent(id) ;
+		ResponseStructure<Student> structure = new ResponseStructure<>() ;
+		
+		if (student != null) 
+		{
+			structure.setMessage("Student is deleted successfully...!");
+			structure.setStatus(HttpStatus.OK.value());
+			structure.setData(dao.deleteStudent(id));
+			return new ResponseEntity<ResponseStructure<Student>>(structure, HttpStatus.OK) ;
+		}
+		return null ;
+		
+	}
 }
