@@ -71,8 +71,17 @@ public class StudentService
 	}
 	
 	
-//	public ResponseEntity<ResponseEntity<List<Student>>> getAllStudent() 
-//	{
-//		
-//	}
+	public ResponseEntity<ResponseStructure<List<Student>>> getAllStudent() 
+	{
+		List<Student> list = dao.getAllStudent() ;
+		ResponseStructure<List<Student>> structure = new ResponseStructure<>() ;
+		if (list.isEmpty()) 
+		{
+			return null ;
+		}
+		structure.setMessage("Students are founds");
+		structure.setStatus(HttpStatus.FOUND.value());
+		structure.setData(list);
+		return new ResponseEntity<ResponseStructure<List<Student>>>(structure, HttpStatus.FOUND) ;
+	}
 }
