@@ -16,6 +16,8 @@ import com.atdev.studentCRUDoperations.dto.Student;
 import com.atdev.studentCRUDoperations.service.StudentService;
 import com.atdev.studentCRUDoperations.util.ResponseStructure;
 
+import jakarta.validation.Valid;
+
 @RestController
 public class StudentController 
 {
@@ -23,7 +25,7 @@ public class StudentController
 	private StudentService service ;
 	
 	@PostMapping("/student")
-	public ResponseEntity<ResponseStructure<Student>> saveStudent(@RequestBody Student student) 
+	public ResponseEntity<ResponseStructure<Student>> saveStudent(@Valid @RequestBody Student student) 
 	{
 		return service.saveStudent(student) ;
 	}
@@ -47,7 +49,7 @@ public class StudentController
 	}
 	
 	@PostMapping("/updateStudent/{id}")
-	public ResponseEntity<ResponseStructure<Student>> updateStudent( @RequestBody Student student, @PathVariable long id) 
+	public ResponseEntity<ResponseStructure<Student>> updateStudent(@Valid @RequestBody Student student, @PathVariable long id) 
 	{
 		return service.updateStudent(student, id) ;
 	}
