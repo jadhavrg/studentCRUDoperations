@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.atdev.studentCRUDoperations.dao.StudentDao;
 import com.atdev.studentCRUDoperations.dto.Student;
+import com.atdev.studentCRUDoperations.exception.DataNotFound;
+import com.atdev.studentCRUDoperations.exception.IdNotFound;
 import com.atdev.studentCRUDoperations.util.ResponseStructure;
 
 @Service
@@ -57,9 +59,10 @@ public class StudentService
 	
 	public ResponseEntity<ResponseStructure<Student>> getStudent(long id) 
 	{
+		Student student = dao.getStudent(id) ;
 		 ResponseStructure<Student> structure = new ResponseStructure<>() ;
 		 
-		 if(structure != null)
+		 if(student != null)
 		 {
 			 structure.setMessage("Student is found successfully..!");
 			 structure.setStatus(HttpStatus.FOUND.value());
@@ -67,7 +70,8 @@ public class StudentService
 			 return new ResponseEntity<ResponseStructure<Student>>(structure, HttpStatus.FOUND) ;
 		 }
 		 
-		 return null ;
+		 throw new IdNotFound("Student with given id "+ id + " is not found") ;
+		 
 	}
 	
 	
@@ -77,7 +81,7 @@ public class StudentService
 		ResponseStructure<List<Student>> structure = new ResponseStructure<>() ;
 		if (list.isEmpty()) 
 		{
-			return null ;
+			throw new DataNotFound("Students are not found") ;
 		}
 		structure.setMessage("Students are founds");
 		structure.setStatus(HttpStatus.FOUND.value());
@@ -97,7 +101,7 @@ public class StudentService
 			structure.setData(dao.deleteStudent(id));
 			return new ResponseEntity<ResponseStructure<Student>>(structure, HttpStatus.OK) ;
 		}
-		return null ;
+		 throw new IdNotFound("Student with given id "+ id + " is not found") ;
 		
 	}
 	
@@ -139,6 +143,6 @@ public class StudentService
 			structure.setData(dao.updateStudent(student, id));
 			return new ResponseEntity<ResponseStructure<Student>>(structure, HttpStatus.OK) ;
 		}
-		return null ;
+		 throw new IdNotFound("Student with given id "+ id + " is not found") ;
 	}
 }
