@@ -45,4 +45,10 @@ public class StudentController
 	{
 		return service.deleteStudent(id) ;
 	}
+	
+	@PostMapping("/updateStudent/{id}")
+	public ResponseEntity<ResponseStructure<Student>> updateStudent( @RequestBody Student student, @PathVariable long id) 
+	{
+		return service.updateStudent(student, id) ;
+	}
 }

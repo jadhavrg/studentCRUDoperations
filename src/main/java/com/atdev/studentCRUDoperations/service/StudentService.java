@@ -100,4 +100,45 @@ public class StudentService
 		return null ;
 		
 	}
+	
+	public ResponseEntity<ResponseStructure<Student>> updateStudent(Student student, long id) 
+	{
+		int marksObtained = student.getMarksObtained() ;
+		int totalMarks = student.getTotalMarks() ;
+		
+		double percentage = (marksObtained *100 / totalMarks) ;
+		student.setPercentage(percentage) ;
+		
+		if (percentage < 35) 
+		{
+			student.setGrade("Fail") ;
+		}
+		else if (percentage>=35 && percentage<50)
+		{
+			student.setGrade("Pass") ;
+		}
+		else if(percentage>=50 && percentage<65)
+		{
+			student.setGrade("C") ;
+		}
+		else if(percentage>=65 && percentage<90)
+		{
+			student.setGrade("B") ;
+		}
+		else if(percentage>=90)
+		{
+			student.setGrade("A") ;
+		}
+		
+		Student dbStudent = dao.getStudent(id) ;
+		ResponseStructure<Student> structure = new ResponseStructure<>() ;
+		if (dbStudent != null) 
+		{
+			structure.setMessage("Student is Updated Successfully...!!");
+			structure.setStatus(HttpStatus.OK.value());
+			structure.setData(dao.updateStudent(student, id));
+			return new ResponseEntity<ResponseStructure<Student>>(structure, HttpStatus.OK) ;
+		}
+		return null ;
+	}
 }
